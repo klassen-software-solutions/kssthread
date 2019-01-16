@@ -1,0 +1,2 @@
+# kssthread
+c++ threading utilities
