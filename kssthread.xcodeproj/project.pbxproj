@@ -1,0 +1,325 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		AACCD44A21EEDF1A00C270C7 /* action_queue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AACCD44621EEDF1A00C270C7 /* action_queue.cpp */; };
+		AACCD44B21EEDF1A00C270C7 /* _contract.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AACCD44721EEDF1A00C270C7 /* _contract.cpp */; };
+		AACCD44C21EEDF1A00C270C7 /* _contract.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AACCD44821EEDF1A00C270C7 /* _contract.hpp */; };
+		AACCD44D21EEDF1A00C270C7 /* action_queue.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AACCD44921EEDF1A00C270C7 /* action_queue.hpp */; };
+		AACCD45321EEE1DA00C270C7 /* utility.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AACCD45221EEE1DA00C270C7 /* utility.hpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		AACCD43721EEDCC000C270C7 /* libkssthread.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libkssthread.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		AACCD43F21EEDD6C00C270C7 /* BuildSystem */ = {isa = PBXFileReference; lastKnownFileType = folder; path = BuildSystem; sourceTree = "<group>"; };
+		AACCD44021EEDD8300C270C7 /* Doxyfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Doxyfile; sourceTree = "<group>"; };
+		AACCD44121EEDD8400C270C7 /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		AACCD44221EEDD8400C270C7 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		AACCD44321EEDD8400C270C7 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		AACCD44421EEDD8400C270C7 /* configure */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = configure; sourceTree = "<group>"; };
+		AACCD44621EEDF1A00C270C7 /* action_queue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = action_queue.cpp; sourceTree = "<group>"; };
+		AACCD44721EEDF1A00C270C7 /* _contract.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = _contract.cpp; sourceTree = "<group>"; };
+		AACCD44821EEDF1A00C270C7 /* _contract.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = _contract.hpp; sourceTree = "<group>"; };
+		AACCD44921EEDF1A00C270C7 /* action_queue.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = action_queue.hpp; sourceTree = "<group>"; };
+		AACCD45221EEE1DA00C270C7 /* utility.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = utility.hpp; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		AACCD43521EEDCC000C270C7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		AACCD42E21EEDCBF00C270C7 = {
+			isa = PBXGroup;
+			children = (
+				AACCD43E21EEDCF700C270C7 /* TopLevel */,
+				AACCD43F21EEDD6C00C270C7 /* BuildSystem */,
+				AACCD44521EEDF1A00C270C7 /* Sources */,
+				AACCD43821EEDCC000C270C7 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		AACCD43821EEDCC000C270C7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AACCD43721EEDCC000C270C7 /* libkssthread.dylib */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		AACCD43E21EEDCF700C270C7 /* TopLevel */ = {
+			isa = PBXGroup;
+			children = (
+				AACCD44421EEDD8400C270C7 /* configure */,
+				AACCD44021EEDD8300C270C7 /* Doxyfile */,
+				AACCD44321EEDD8400C270C7 /* LICENSE */,
+				AACCD44121EEDD8400C270C7 /* Makefile */,
+				AACCD44221EEDD8400C270C7 /* README.md */,
+			);
+			name = TopLevel;
+			sourceTree = "<group>";
+		};
+		AACCD44521EEDF1A00C270C7 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				AACCD44721EEDF1A00C270C7 /* _contract.cpp */,
+				AACCD44821EEDF1A00C270C7 /* _contract.hpp */,
+				AACCD44621EEDF1A00C270C7 /* action_queue.cpp */,
+				AACCD44921EEDF1A00C270C7 /* action_queue.hpp */,
+				AACCD45221EEE1DA00C270C7 /* utility.hpp */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		AACCD43321EEDCC000C270C7 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AACCD44D21EEDF1A00C270C7 /* action_queue.hpp in Headers */,
+				AACCD44C21EEDF1A00C270C7 /* _contract.hpp in Headers */,
+				AACCD45321EEE1DA00C270C7 /* utility.hpp in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		AACCD43621EEDCC000C270C7 /* kssthread */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AACCD43B21EEDCC000C270C7 /* Build configuration list for PBXNativeTarget "kssthread" */;
+			buildPhases = (
+				AACCD43321EEDCC000C270C7 /* Headers */,
+				AACCD43421EEDCC000C270C7 /* Sources */,
+				AACCD43521EEDCC000C270C7 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = kssthread;
+			productName = kssthread;
+			productReference = AACCD43721EEDCC000C270C7 /* libkssthread.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		AACCD42F21EEDCBF00C270C7 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1010;
+				ORGANIZATIONNAME = "Klassen Software Solutions";
+				TargetAttributes = {
+					AACCD43621EEDCC000C270C7 = {
+						CreatedOnToolsVersion = 10.1;
+					};
+				};
+			};
+			buildConfigurationList = AACCD43221EEDCBF00C270C7 /* Build configuration list for PBXProject "kssthread" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = AACCD42E21EEDCBF00C270C7;
+			productRefGroup = AACCD43821EEDCC000C270C7 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				AACCD43621EEDCC000C270C7 /* kssthread */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		AACCD43421EEDCC000C270C7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AACCD44A21EEDF1A00C270C7 /* action_queue.cpp in Sources */,
+				AACCD44B21EEDF1A00C270C7 /* _contract.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		AACCD43921EEDCC000C270C7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/.build/Darwin-x86_64/include";
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				VALID_ARCHS = x86_64;
+			};
+			name = Debug;
+		};
+		AACCD43A21EEDCC000C270C7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/.build/Darwin-x86_64/include";
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				VALID_ARCHS = x86_64;
+			};
+			name = Release;
+		};
+		AACCD43C21EEDCC000C270C7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 23FN26LWBV;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				EXECUTABLE_PREFIX = lib;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		AACCD43D21EEDCC000C270C7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 23FN26LWBV;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				EXECUTABLE_PREFIX = lib;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		AACCD43221EEDCBF00C270C7 /* Build configuration list for PBXProject "kssthread" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AACCD43921EEDCC000C270C7 /* Debug */,
+				AACCD43A21EEDCC000C270C7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AACCD43B21EEDCC000C270C7 /* Build configuration list for PBXNativeTarget "kssthread" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AACCD43C21EEDCC000C270C7 /* Debug */,
+				AACCD43D21EEDCC000C270C7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = AACCD42F21EEDCBF00C270C7 /* Project object */;
+}
