@@ -9,6 +9,10 @@
 #ifndef kssthread_utility_h
 #define kssthread_utility_h
 
+#include <chrono>
+#include <functional>
+#include <stdexcept>
+
 namespace kss { namespace thread {
 
     namespace _private {
@@ -38,13 +42,12 @@ namespace kss { namespace thread {
             return duration_cast<ToDuration>(s);
         }
 
-
         /*!
          Returns a time_point constructed to contain the current time as defined by
          the time point's clock.
          @throws kss::util::time::checked_duration_cast if the duration value for
-         TimePoint::clock::time_point::duration cannot be represented as a duration
-         value for TimePoint::duration.
+            TimePoint::clock::time_point::duration cannot be represented as a duration
+            value for TimePoint::duration.
 
          "borrowed" from kssutil
          */
@@ -55,6 +58,12 @@ namespace kss { namespace thread {
             const auto dur = Clock::now().time_since_epoch();
             return TimePoint(checked_duration_cast<Duration>(dur));
         }
+
+        /*!
+         Returns the time (real time) taken to execute the given block.
+         "borrowed" from kssutil
+         */
+        std::chrono::milliseconds timeOfExecution(const std::function<void()>& fn);
 
     }
 }}
