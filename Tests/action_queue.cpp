@@ -59,24 +59,17 @@ static TestSuite ts("action_queue", {
     make_pair("ActionQueue timed", [](TestSuite&) {
         int counter = 0;
         const auto start = now<time_point_t>();
-        array<time_point_t, 5> finishTimes;
         ActionQueue queue;
-        for (int i = 0; i < finishTimes.size(); ++i) {
+        for (int i = 0; i < 5; ++i) {
             const auto pause = chrono::milliseconds(i*10);
-            queue.addAction(pause, [&counter, &finishTimes, i]{
+            queue.addAction(pause, [&]{
                 ++counter;
-                finishTimes[i] = now<time_point_t>();
+                KSS_ASSERT(now<time_point_t>() >= (start + pause));
             });
         }
-
         queue.wait();
-        for (int i = 0; i < finishTimes.size(); ++i) {
-            const auto pause = chrono::milliseconds(i*10);
-            KSS_ASSERT(finishTimes[i] >= (start + pause));
-        }
         KSS_ASSERT(counter == 5);
     }),
-#if 0
     make_pair("ActionQueue mixed", [](TestSuite&) {
         int immediateTick = 0;
         int slowTick = 0;
@@ -183,5 +176,4 @@ static TestSuite ts("action_queue", {
         // Cannot use exact matches for timing results, but this should easily pass.
         KSS_ASSERT(t < 100ms);
     })
-#endif
 });
