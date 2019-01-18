@@ -14,12 +14,12 @@
 		AACCD46721EEE44A00C270C7 /* version.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AACCD46521EEE44A00C270C7 /* version.cpp */; };
 		AACCD46821EEE44A00C270C7 /* version.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AACCD46621EEE44A00C270C7 /* version.hpp */; };
 		AACCD46D21EEE4E700C270C7 /* version.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AACCD46A21EEE4E600C270C7 /* version.cpp */; };
-		AACCD46E21EEE4E700C270C7 /* ksstest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AACCD46B21EEE4E700C270C7 /* ksstest.cpp */; };
 		AACCD47021EEE52D00C270C7 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AACCD46F21EEE52D00C270C7 /* main.cpp */; };
 		AACCD47421EEE65C00C270C7 /* action_queue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AACCD47321EEE65C00C270C7 /* action_queue.cpp */; };
 		AACCD47621EEE6FF00C270C7 /* utility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AACCD47521EEE6FF00C270C7 /* utility.cpp */; };
 		AACCD47921EEEB1600C270C7 /* action_queue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AACCD47721EEEB1600C270C7 /* action_queue.cpp */; };
 		AACCD47A21EEEB1600C270C7 /* action_queue.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AACCD47821EEEB1600C270C7 /* action_queue.hpp */; };
+		AACCD48C21F1775500C270C7 /* ksstest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AACCD48A21F1775500C270C7 /* ksstest.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,13 +59,13 @@
 		AACCD46521EEE44A00C270C7 /* version.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = version.cpp; sourceTree = "<group>"; };
 		AACCD46621EEE44A00C270C7 /* version.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = version.hpp; sourceTree = "<group>"; };
 		AACCD46A21EEE4E600C270C7 /* version.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = version.cpp; sourceTree = "<group>"; };
-		AACCD46B21EEE4E700C270C7 /* ksstest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ksstest.cpp; sourceTree = "<group>"; };
-		AACCD46C21EEE4E700C270C7 /* ksstest.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ksstest.hpp; sourceTree = "<group>"; };
 		AACCD46F21EEE52D00C270C7 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		AACCD47321EEE65C00C270C7 /* action_queue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = action_queue.cpp; sourceTree = "<group>"; };
 		AACCD47521EEE6FF00C270C7 /* utility.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = utility.cpp; sourceTree = "<group>"; };
 		AACCD47721EEEB1600C270C7 /* action_queue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = action_queue.cpp; sourceTree = "<group>"; };
 		AACCD47821EEEB1600C270C7 /* action_queue.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = action_queue.hpp; sourceTree = "<group>"; };
+		AACCD48A21F1775500C270C7 /* ksstest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ksstest.cpp; sourceTree = "<group>"; };
+		AACCD48B21F1775500C270C7 /* ksstest.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ksstest.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,8 +146,8 @@
 			isa = PBXGroup;
 			children = (
 				AACCD47321EEE65C00C270C7 /* action_queue.cpp */,
-				AACCD46B21EEE4E700C270C7 /* ksstest.cpp */,
-				AACCD46C21EEE4E700C270C7 /* ksstest.hpp */,
+				AACCD48A21F1775500C270C7 /* ksstest.cpp */,
+				AACCD48B21F1775500C270C7 /* ksstest.hpp */,
 				AACCD46F21EEE52D00C270C7 /* main.cpp */,
 				AACCD46A21EEE4E600C270C7 /* version.cpp */,
 			);
@@ -280,7 +280,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AACCD46D21EEE4E700C270C7 /* version.cpp in Sources */,
-				AACCD46E21EEE4E700C270C7 /* ksstest.cpp in Sources */,
+				AACCD48C21F1775500C270C7 /* ksstest.cpp in Sources */,
 				AACCD47021EEE52D00C270C7 /* main.cpp in Sources */,
 				AACCD47421EEE65C00C270C7 /* action_queue.cpp in Sources */,
 			);
