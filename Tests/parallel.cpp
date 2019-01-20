@@ -4,10 +4,7 @@
 //
 //  Created by Steven W. Klassen on 2003-09-22.
 //  Copyright (c) Klassen Software Solutions. All rights reserved.
-//
-//  Permission is hereby granted to use/modify/publish this code without restriction or
-//  requirement other than you are not allowed to hinder others from doing the same.
-//  No warranty or other guarantee is given regarding the use of this code.
+//  Licensing follows the MIT License.
 //
 
 #include <atomic>

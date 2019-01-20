@@ -4,19 +4,18 @@
 //
 //  Created by Steven W. Klassen on 2003-09-22.
 //  Copyright (c) Klassen Software Solutions. All rights reserved.
-//
-//  Permission is hereby granted to use/modify/publish this code without restriction or
-//  requirement other than you are not allowed to hinder others from doing the same.
-//  No warranty or other guarantee is given regarding the use of this code.
+//  Licensing follows the MIT License.
 //
 
-// This file is a re-write of the earlier "Processor" class to make use of the C++11 async
+// This is a re-write of the earlier "Processor" class to make use of the C++11 async
 // call. As part of this we have dropped the sequential portions of the class and have
 // replaced the parallel portions with a single "parallel" function. This function runs
 // all the actions it is given using async, then waits for all the futures to complete
-// before returning. (To give an idea of the benefit of this re-write, the original code
-// written in 2003 was over 400 lines long, possibly less efficient in its use of threads,
-// and much more difficult to use.)
+// before returning.
+
+// There is a second version of parallel() that takes a pre-defined cache of threads
+// (called a ParallelThreadGroup in this API). This runs the workers in the existing
+// threads rather than generating new ones each time. 
 
 #ifndef kssthread_parallel_hpp
 #define kssthread_parallel_hpp
