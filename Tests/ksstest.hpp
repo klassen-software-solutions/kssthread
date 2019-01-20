@@ -15,6 +15,7 @@
 #include <functional>
 #include <initializer_list>
 #include <memory>
+#include <sstream>
 #include <string>
 #include <system_error>
 #include <typeinfo>
@@ -143,8 +144,9 @@ namespace kss { namespace test {
         const auto res = fn();
         bool ret = (res == a);
         if (!ret) {
-            _private::setFailureDetails("expected (" + std::to_string(a)
-                                        + "), actual was (" + std::to_string(res) + ")");
+            std::ostringstream strm;
+            strm << "expected (" << a << "), actual was (" << res << ")";
+            _private::setFailureDetails(strm.str());
         }
         return ret;
     }

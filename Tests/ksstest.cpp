@@ -37,6 +37,12 @@ using namespace std::chrono;
 using namespace kss::test;
 
 
+// MARK: Configuration constants.
+
+namespace {
+    constexpr size_t maxFailureReportLineLength = 100;
+}
+
 // MARK: Simple XML streaming "borrowed" from kssutil
 
 namespace { namespace xml {
@@ -1422,6 +1428,10 @@ namespace kss { namespace test { namespace _private {
         ++currentTest->assertions;
         auto f = make_pair(basename(filename) + ": " + to_string(line) + ", " + expr,
                            currentTest->mostRecentDetails);
+        if (f.first.size() > maxFailureReportLineLength) {
+            f.first.resize(maxFailureReportLineLength);
+            f.first.append("...");
+        }
         currentTest->failures.push_back(move(f));
         currentTest->mostRecentDetails = "";
         if (isVerboseMode) {
