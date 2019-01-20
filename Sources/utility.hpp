@@ -10,12 +10,19 @@
 #define kssthread_utility_h
 
 #include <chrono>
+#include <exception>
 #include <functional>
+#include <iostream>
 #include <stdexcept>
 
 namespace kss { namespace thread {
 
     namespace _private {
+
+        // Use these macros if a condition fails in a header file. (In a cpp file
+        // use the contract API.)
+#       define _KSSTHREAD_PRECONDITIONS_FAILED { std::cerr << "preconditions failed " << __FILE__ << ", " << __LINE__ << std::endl; std::terminate(); }
+#       define _KSSTHREAD_POSTCONDITIONS_FAILED { std::cerr << "postconditions failed " << __FILE__ << ", " << __LINE__ << std::endl; std::terminate(); }
 
         /*!
          A checked version of duration_cast. Note that this will be less efficient

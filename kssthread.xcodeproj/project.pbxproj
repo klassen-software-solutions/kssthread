@@ -11,6 +11,9 @@
 		AA4D19CA21F3F77F002A7FBB /* action_thread.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA4D19C821F3F77E002A7FBB /* action_thread.hpp */; };
 		AA4D19CC21F3F805002A7FBB /* action_thread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA4D19CB21F3F805002A7FBB /* action_thread.cpp */; };
 		AA4D19CF21F3F864002A7FBB /* ksstest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA4D19CE21F3F864002A7FBB /* ksstest.cpp */; };
+		AA4D19D221F421DA002A7FBB /* parallel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA4D19D021F421DA002A7FBB /* parallel.cpp */; };
+		AA4D19D321F421DA002A7FBB /* parallel.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA4D19D121F421DA002A7FBB /* parallel.hpp */; };
+		AA4D19D521F4240F002A7FBB /* parallel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA4D19D421F4240F002A7FBB /* parallel.cpp */; };
 		AACCD44B21EEDF1A00C270C7 /* _contract.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AACCD44721EEDF1A00C270C7 /* _contract.cpp */; };
 		AACCD44C21EEDF1A00C270C7 /* _contract.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AACCD44821EEDF1A00C270C7 /* _contract.hpp */; };
 		AACCD45321EEE1DA00C270C7 /* utility.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AACCD45221EEE1DA00C270C7 /* utility.hpp */; };
@@ -54,6 +57,9 @@
 		AA4D19CB21F3F805002A7FBB /* action_thread.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = action_thread.cpp; sourceTree = "<group>"; };
 		AA4D19CD21F3F864002A7FBB /* ksstest.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ksstest.hpp; sourceTree = "<group>"; };
 		AA4D19CE21F3F864002A7FBB /* ksstest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ksstest.cpp; sourceTree = "<group>"; };
+		AA4D19D021F421DA002A7FBB /* parallel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = parallel.cpp; sourceTree = "<group>"; };
+		AA4D19D121F421DA002A7FBB /* parallel.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = parallel.hpp; sourceTree = "<group>"; };
+		AA4D19D421F4240F002A7FBB /* parallel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = parallel.cpp; sourceTree = "<group>"; };
 		AACCD43721EEDCC000C270C7 /* libkssthread.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libkssthread.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		AACCD43F21EEDD6C00C270C7 /* BuildSystem */ = {isa = PBXFileReference; lastKnownFileType = folder; path = BuildSystem; sourceTree = "<group>"; };
 		AACCD44021EEDD8300C270C7 /* Doxyfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Doxyfile; sourceTree = "<group>"; };
@@ -137,6 +143,8 @@
 				AACCD47821EEEB1600C270C7 /* action_queue.hpp */,
 				AA4D19C721F3F77E002A7FBB /* action_thread.cpp */,
 				AA4D19C821F3F77E002A7FBB /* action_thread.hpp */,
+				AA4D19D021F421DA002A7FBB /* parallel.cpp */,
+				AA4D19D121F421DA002A7FBB /* parallel.hpp */,
 				AACCD47521EEE6FF00C270C7 /* utility.cpp */,
 				AACCD45221EEE1DA00C270C7 /* utility.hpp */,
 				AACCD46521EEE44A00C270C7 /* version.cpp */,
@@ -160,6 +168,7 @@
 				AA4D19CE21F3F864002A7FBB /* ksstest.cpp */,
 				AA4D19CD21F3F864002A7FBB /* ksstest.hpp */,
 				AACCD46F21EEE52D00C270C7 /* main.cpp */,
+				AA4D19D421F4240F002A7FBB /* parallel.cpp */,
 				AACCD46A21EEE4E600C270C7 /* version.cpp */,
 			);
 			path = Tests;
@@ -175,6 +184,7 @@
 				AA4D19CA21F3F77F002A7FBB /* action_thread.hpp in Headers */,
 				AACCD47A21EEEB1600C270C7 /* action_queue.hpp in Headers */,
 				AACCD44C21EEDF1A00C270C7 /* _contract.hpp in Headers */,
+				AA4D19D321F421DA002A7FBB /* parallel.hpp in Headers */,
 				AACCD45321EEE1DA00C270C7 /* utility.hpp in Headers */,
 				AACCD46821EEE44A00C270C7 /* version.hpp in Headers */,
 			);
@@ -282,6 +292,7 @@
 			files = (
 				AA4D19C921F3F77F002A7FBB /* action_thread.cpp in Sources */,
 				AACCD47621EEE6FF00C270C7 /* utility.cpp in Sources */,
+				AA4D19D221F421DA002A7FBB /* parallel.cpp in Sources */,
 				AACCD46721EEE44A00C270C7 /* version.cpp in Sources */,
 				AACCD44B21EEDF1A00C270C7 /* _contract.cpp in Sources */,
 				AACCD47921EEEB1600C270C7 /* action_queue.cpp in Sources */,
@@ -294,6 +305,7 @@
 			files = (
 				AA4D19CC21F3F805002A7FBB /* action_thread.cpp in Sources */,
 				AACCD46D21EEE4E700C270C7 /* version.cpp in Sources */,
+				AA4D19D521F4240F002A7FBB /* parallel.cpp in Sources */,
 				AACCD47021EEE52D00C270C7 /* main.cpp in Sources */,
 				AA4D19CF21F3F864002A7FBB /* ksstest.cpp in Sources */,
 				AACCD47421EEE65C00C270C7 /* action_queue.cpp in Sources */,
