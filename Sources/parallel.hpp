@@ -15,7 +15,7 @@
 
 // There is a second version of parallel() that takes a pre-defined cache of threads
 // (called a ParallelThreadGroup in this API). This runs the workers in the existing
-// threads rather than generating new ones each time. 
+// threads rather than generating new ones each time.
 
 #ifndef kssthread_parallel_hpp
 #define kssthread_parallel_hpp
@@ -107,7 +107,7 @@ namespace kss {
             void waitForAll();
 
         private:
-            std::vector<ActionThread>       threads;
+            std::vector<ActionThread<void>> threads;
             std::vector<std::future<void>>  futures;
         };
 
