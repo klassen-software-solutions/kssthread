@@ -4,6 +4,7 @@
 //
 //  Created by Steven W. Klassen on 2019-01-08.
 //  Copyright © 2019 Klassen Software Solutions. All rights reserved.
+//  Licensing follows the MIT License.
 //
 // Note that since the whole purpose of the ActionThread is to minimize the thread
 // re-use overhead, we deviate from our normal contract practice and only perform
@@ -63,9 +64,9 @@ namespace kss { namespace thread {
          call. But it is also more limited in that it must return a future<T>.
 
          Note that it is an error to call this when the ActionThread is already running an
-         action. Doing so will result in terminate() being called. The only way to avoid
-         this for certain is to call get() or wait() on the returned future before calling
-         this again.
+         action. Doing so will will cause (in debug mode) an assertion to fail. Note that
+         the only way to avoid this for certain is to call get() or wait() on the returned
+         future before calling this method again.
          */
         template <class Fn, class... Args>
         std::future<T> async(Fn&& fn, Args&&... args) {

@@ -1,6 +1,6 @@
 //
 //  parallel.cpp
-//  KSSCore
+//  unittest
 //
 //  Created by Steven W. Klassen on 2003-09-22.
 //  Copyright (c) Klassen Software Solutions. All rights reserved.
