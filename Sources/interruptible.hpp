@@ -106,7 +106,14 @@ namespace kss { namespace thread {
      it is generally a bad idea to throw exceptions out of a thread, but that is really
      up to you. The interruptible class will simply pass on the exception.)
 
-     Catching ... The thread interruption implementation makes use of an internal
+     \warning std::condition_variable
+     For reasons I have not yet determined, thread interruption does not like to
+     play nice with std::condition_variable, at least on macOS. In particular you
+     sometimes (but not always) get an uncaught exception in the condition variable
+     wait() method.
+     
+     \warning Catching "..."
+     The thread interruption implementation makes use of an internal
      exception in order to properly unwrap and cleanup the stack. For Linux this is
      called "abi::__forced_unwind" and for others it is called
      "kss::thread::_private::Interrupted". If your function catches these exceptions
