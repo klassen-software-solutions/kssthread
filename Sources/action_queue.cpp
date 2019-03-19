@@ -57,7 +57,7 @@ struct ActionQueue::Impl {
     action_map_t        pendingActions;
 
     void runActionThread() {
-         while (true) {
+         while (!stopping) {
              bool haveAction = false;
              action_t currentAction;
              time_point_t nextTargetTime;

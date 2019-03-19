@@ -24,11 +24,6 @@
 namespace kss { namespace thread {
 
     namespace _private {
-        inline void stopAndNotify(std::mutex& lock, bool& stopping, std::condition_variable& cv) {
-            std::unique_lock<std::mutex> l(lock);
-            stopping = true;
-            cv.notify_all();
-        }
 
         template <class T>
         inline bool isCallable(const std::packaged_task<T()>& fn) {
@@ -46,7 +41,8 @@ namespace kss { namespace thread {
         ActionThread() = default;
 
         ~ActionThread() noexcept {
-            _private::stopAndNotify(lock, stopping, cv);
+            stopping = true;
+            cv.notify_all();
             if (workerThread.joinable()) {
                 workerThread.join();
             }
@@ -86,7 +82,7 @@ namespace kss { namespace thread {
         }
 
         std::thread workerThread { [this] {
-            while (true) {
+            while (!stopping) {
                 std::packaged_task<T()> localWorker;
 
                 // Wait until a worker has been assigned.
@@ -106,13 +102,18 @@ namespace kss { namespace thread {
 
                 // Run the worker.
                 assert(_private::isCallable(localWorker));
-                localWorker();
+                if (stopping) {
+                    break;
+                }
+                else {
+                    localWorker();
+                }
             }
         }};
 
         std::mutex              lock;
         std::condition_variable cv;
-        bool                    stopping = false;
+        std::atomic<bool>       stopping { false };
         std::packaged_task<T()> worker;
     };
 }}
