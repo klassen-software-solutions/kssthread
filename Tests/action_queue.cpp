@@ -150,7 +150,7 @@ static ActionQueueTestSuite ts({
             resetQueue();
         });
         // Cannot use exact matches for timing results, but this should easily pass.
-        KSS_ASSERT(t < 100ms);
+        KSS_ASSERT(t < 900ms);
     }),
     make_pair("RepeatingAction", [] {
         int immediateTick = 0;

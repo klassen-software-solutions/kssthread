@@ -151,6 +151,7 @@ ActionQueue::~ActionQueue() noexcept {
     try {
         impl->stopping = true;
         impl->cv.notify_all();
+        cancel();
         if (impl->actionThread.joinable()) {
             impl->actionThread.join();
         }
