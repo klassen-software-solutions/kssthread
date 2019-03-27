@@ -59,14 +59,10 @@ namespace kss { namespace thread {
 
      To make all this work we define the following items:
 
-     \class kss::thread::interruptible - a class that marks a block of code as being
-        interruptible
-     \fn kss::thread::interrupt(th) - will send the interruption (cancel) signal to
-        the given thread
-     \fn kss::thread::interruptionPoint - causes the current thread to check
-        for cancellation
-     \fn kss::thread::onInterrupted - a method that allows you to specify one
-        or more handlers to be run when a thread is interrupted.
+     - kss::thread::interruptible a class that marks a block of code as being interruptible
+     - kss::thread::interrupt(th) will send the interruption (cancel) signal to the given thread
+     - kss::thread::interruptionPoint causes the current thread to check for cancellation
+     - kss::thread::onInterrupted a method that allows you to specify one or more handlers to be run when a thread is interrupted.
 
      Making a thread interruptible. In order to make a thread (or more accurately,
      a portion of the code within a thread) interruptible you wrap the code as a
