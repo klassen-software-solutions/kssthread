@@ -1,0 +1,41 @@
+/*!
+ \mainpage
+
+ # Using the library
+
+ ## Accessing the header files
+
+ The recommended way to use this library
+ is to include the all.h header file. This will include all the public headers and has
+ two advantages over including them individually:
+
+ 1. You don't have to remember all the individual filenames, and
+ 2. using all.h allows the compiler to make better use of precompiled headers.
+
+ So, the typical include would be
+
+     #include <kss/thread/all.h>
+
+ You can include the individual headers separately if you really want to, but note that
+ you will still need to include the "kss/thread" prefix for each of them, even though that
+ is not reported in the Doxygen generated documentation.
+
+ ## Accessing the library file
+
+ The created library will always be a dynamic library called kssio. Hence you would add
+
+     -lkssthread
+
+ to your build.
+
+ ## License
+
+ Unless otherwise specified, the files in this library are licensed according to the MIT
+ license as shown below.
+
+  <BLOCKQUOTE>
+  \include LICENSE
+
+  </BLOCKQUOTE>
+
+ */

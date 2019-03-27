@@ -1,0 +1,7 @@
+#!/bin/sh
+
+#  configure
+#  ksscontract
+#
+
+. BuildSystem/configure_common.sh
