@@ -8,6 +8,8 @@
 //
 
 #include <cerrno>
+#include <cstdio>
+#include <cstring>
 #include <system_error>
 
 #include <syslog.h>

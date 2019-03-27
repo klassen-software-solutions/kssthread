@@ -8,6 +8,7 @@
 //
 
 #include <csignal>
+#include <system_error>
 #include <pthread.h>
 #include "signal.hpp"
 

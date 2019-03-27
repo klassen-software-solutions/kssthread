@@ -1,5 +1,6 @@
 .build
 .prereqs
+config.defs
 docs
 docs.zip
 project.xcworkspace

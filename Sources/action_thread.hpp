@@ -17,6 +17,7 @@
 #include <atomic>
 #include <cassert>
 #include <condition_variable>
+#include <functional>
 #include <future>
 #include <iostream>
 #include <thread>

@@ -218,6 +218,11 @@ namespace kss { namespace thread {
 
         ~RepeatingAction() noexcept;
 
+        RepeatingAction(const RepeatingAction&) = delete;
+        RepeatingAction(RepeatingAction&&) = delete;
+        RepeatingAction& operator=(const RepeatingAction&) = delete;
+        RepeatingAction& operator=(RepeatingAction&&) = delete;
+
     private:
         std::chrono::milliseconds   timeInterval;
         ActionQueue&                queue;

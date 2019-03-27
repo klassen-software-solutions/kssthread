@@ -64,13 +64,13 @@ static TestSuite ts("parallel", {
     }),
     make_pair("cached version", [] {
         constexpr size_t numIterations = 1000;
-        constexpr auto smallDelay = 60us;
+        constexpr auto smallDelay = 90us;
         atomic<int> numRan { 0 };
 
         const auto tSerial = duration_cast<milliseconds>(smallDelay * (numIterations*3));
 
         const auto t = timeOfExecution([&] {
-            for (int i = 0; i < numIterations; ++i) {
+            for (size_t i = 0; i < numIterations; ++i) {
                 parallel([&]{ this_thread::sleep_for(smallDelay); ++numRan; },
                          [&]{ this_thread::sleep_for(smallDelay); ++numRan; },
                          [&]{ this_thread::sleep_for(smallDelay); ++numRan; });
@@ -82,7 +82,7 @@ static TestSuite ts("parallel", {
         numRan = 0;
         const auto tpg = timeOfExecution([&] {
             ParallelThreadGroup tg(3);
-            for (int i = 0; i < numIterations; ++i) {
+            for (size_t i = 0; i < numIterations; ++i) {
                 parallel(tg,
                          [&]{ this_thread::sleep_for(smallDelay); ++numRan; },
                          [&]{ this_thread::sleep_for(smallDelay); ++numRan; },

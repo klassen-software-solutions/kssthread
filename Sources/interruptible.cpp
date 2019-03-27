@@ -80,6 +80,11 @@ namespace {
             pthread_setcancelstate(oldCancelState, NULL);
         }
 
+        Guard(const Guard&) = delete;
+        Guard(Guard&&) = delete;
+        Guard& operator=(const Guard&) = delete;
+        Guard& operator=(Guard&&) = delete;
+
     private:
         int oldCancelState = 0;
     };
