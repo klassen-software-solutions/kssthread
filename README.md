@@ -39,6 +39,8 @@ make check
 sudo make install
 ```
 
+## Contributing
+
 If you wish to make changes to this library that you believe will be useful to others, you can
 contribute to the project. If you do, there are a number of policies you should follow:
 
