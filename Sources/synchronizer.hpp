@@ -60,13 +60,6 @@ namespace kss { namespace thread {
 
         explicit Condition(const predicate_t& pred) : pred(pred) {}
         explicit Condition(predicate_t&& pred) : pred(move(pred)) {}
-        ~Condition() = default;
-
-        // Moving is allowed, copying is not.
-        Condition(Condition&&) = default;
-        Condition& operator=(Condition&&) = default;
-        Condition(const Condition&) = delete;
-        Condition& operator=(const Condition&) = delete;
 
         /*!
          Wait for the condition to become true. Note that this only guarantees that
@@ -131,8 +124,6 @@ namespace kss { namespace thread {
     public:
 
         Latch() : Condition([this]{ return hasBeenFreed; }) {}
-        Latch(Latch&&) = default;
-        Latch& operator=(Latch&&) = default;
 
         /*!
          * Release the latch. This will cause the waiting threads to be notified
@@ -158,13 +149,6 @@ namespace kss { namespace thread {
     class Barrier {
     public:
         Barrier(unsigned n) : n(n) {}
-        ~Barrier() = default;
-
-        // Move is allowed, copy is not.
-        Barrier(Barrier&&) = default;
-        Barrier& operator=(Barrier&&) = default;
-        Barrier(const Barrier&) = delete;
-        Barrier& operator=(const Barrier&) = delete;
 
         /*!
          Wait until n threads have called the wait() method.
