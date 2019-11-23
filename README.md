@@ -25,7 +25,7 @@ consistent coding standards across the entire library.
 ## Limitation on Ubuntu
 
 While this code is regularly tested on macOS and Ubuntu, on Ubuntu it requires that you use the clang++
-compiler instead of g++. The g++ compiler seg faults during the compilation. (At least version 7.3.0 does, 
+compiler instead of g++. The g++ compiler seg faults during the compilation. (At least version 7.4.0 does, 
 newer versions may fix the problem.)
 
 ## Installing the Library
