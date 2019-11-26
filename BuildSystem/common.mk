@@ -42,23 +42,28 @@ else
 	CFLAGS := $(CFLAGS) $(OPTIMIZED_FLAGS)
 endif
 
+# Only include the license file dependancy if there are prerequisites to examine.
+PREREQS_LICENSE_FILE := Dependancies/prereqs-licenses.json
+ifeq ($(wildcard Dependancies/prereqs.json),)
+	PREREQS_LICENSE_FILE :=
+endif
+
+KSS_INSTALL_PREFIX ?= /opt/$(PREFIX)
+CFLAGS := $(CFLAGS) -I$(KSS_INSTALL_PREFIX)/include
+LDFLAGS := $(LDFLAGS) -L$(KSS_INSTALL_PREFIX)/lib
+LDPATHEXPR := $(LDPATHEXPR):$(KSS_INSTALL_PREFIX)/lib
+
 CXXFLAGS := $(CXXFLAGS) $(CFLAGS)
 LDFLAGS := $(LDFLAGS) -L$(LIBDIR)
-ifneq ("$(wildcard $(PREREQSDIR)/lib)","")
-    LDFLAGS := $(LDFLAGS) -L$(PREREQSDIR)/lib
-endif
 
 -include $(PROJECTDIR)/config.local
 -include $(PROJECTDIR)/config.defs
 
 CFLAGS := $(CFLAGS) -I$(BUILDDIR)/include
 CXXFLAGS := $(CXXFLAGS) -I$(BUILDDIR)/include -std=c++14 -Wno-unknown-pragmas
-ifneq ("$(wildcard $(PREREQSDIR)/include)","")
-    CFLAGS := $(CFLAGS) -I$(PREREQSDIR)/include
-    CXXFLAGS := $(CXXFLAGS) -I$(PREREQSDIR)/include
-endif
 
-.PHONY: build library install check clean cleanall directory-checks hello prep docs help prereqs
+.PHONY: build library install check analyze clean cleanall directory-checks hello
+.PHONY: prep docs help prereqs
 
 LIBNAME := $(PREFIX)$(PACKAGEBASENAME)
 LIBFILE := lib$(LIBNAME)$(SOEXT)
@@ -74,9 +79,12 @@ ifeq ($(wildcard Tests/.*),)
 	TESTPATH :=
 endif
 
-build: library
+build: library $(PREREQS_LICENSE_FILE)
 
 library: $(LIBPATH)
+
+Dependancies/prereqs-licenses.json: Dependancies/prereqs.json
+	BuildSystem/license_scanner.py
 
 
 # Use "make help" to give some instructions on how the build system works.
@@ -162,7 +170,7 @@ $(HEADERDIR):
 	echo build $(HEADERDIR)
 	-mkdir -p $(BUILDDIR)/include/$(PREFIX)
 	-rm $(BUILDDIR)/include/$(PREFIX)/$(PACKAGEBASENAME)
-	-ln -s `pwd`/Sources $(BUILDDIR)/include/$(PREFIX)/$(PACKAGEBASENAME)
+	-ln -s $(PROJECTDIR)/Sources $(BUILDDIR)/include/$(PREFIX)/$(PACKAGEBASENAME)
 
 
 # Build and run the unit tests.
@@ -174,6 +182,7 @@ endif
 TESTSRCS := $(filter-out Sources/main.cpp, $(TESTSRCS))
 TESTOBJS := $(patsubst Tests/%.cpp,$(TESTDIR)/%.o,$(TESTSRCS))
 TESTHDRS := $(wildcard Tests/*.h) $(wildcard Tests/*.hpp)
+#TESTLIBS :=  add this to your Makefile if necessary
 
 check: library $(TESTPATH)
 ifneq ($(wildcard $(EXEPATH)),)
@@ -181,8 +190,11 @@ ifneq ($(wildcard $(EXEPATH)),)
 endif
 	$(LDPATHEXPR) $(TESTPATH)
 
+analyze:
+	$(BUILDSYSTEMDIR)/xcode_analyzer.py
+
 $(TESTPATH): $(LIBPATH) $(TESTDIR) $(TESTOBJS)
-	$(CXX) $(LDFLAGS) -L$(BUILDDIR) $(TESTOBJS) -l $(LIBNAME) $(LIBS) -o $@
+	$(CXX) $(LDFLAGS) -L$(BUILDDIR) $(TESTOBJS) -l $(LIBNAME) $(LIBS) $(TESTLIBS) -o $@
 
 $(TESTDIR):
 	-mkdir -p $@
@@ -194,7 +206,11 @@ $(TESTDIR)/%.o: Tests/%.cpp $(TESTHDRS)
 # Build the documentation.
 docs:
 	-rm -rf docs
-	doxygen Doxyfile
+	(cat BuildSystem/Doxyfile ; \
+	 echo "PROJECT_NAME=$(PROJECT_NAME)" ; \
+	 echo "PROJECT_NUMBER=v$(VERSION)" ; \
+	 echo "PROJECT_BRIEF=\"$(PROJECT_TITLE)\"") \
+	| doxygen -
 
 # Perform the install.
 install: $(TARGETDIR)/include/$(PREFIX) $(TARGETDIR)/lib

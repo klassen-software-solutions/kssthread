@@ -9,8 +9,9 @@
 
 #include <csignal>
 #include <thread>
+
+#include <kss/test/all.h>
 #include <kss/thread/signal.hpp>
-#include "ksstest.hpp"
 
 using namespace std;
 using namespace kss::thread;

@@ -13,14 +13,14 @@
 #include <system_error>
 
 #include <syslog.h>
+#include <kss/contract/all.h>
 
-#include "_contract.hpp"
 #include "read_write_lock.hpp"
 
 using namespace std;
 using namespace kss::thread;
 
-namespace contract = kss::thread::_private::contract;
+namespace contract = kss::contract;
 
 
 namespace {

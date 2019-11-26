@@ -15,14 +15,14 @@
 #include <semaphore.h>
 #include <syslog.h>
 #include <sys/stat.h>
+#include <kss/contract/all.h>
 
-#include "_contract.hpp"
 #include "semaphore.hpp"
 
 using namespace std;
 using namespace kss::thread;
 
-namespace contract = kss::thread::_private::contract;
+namespace contract = kss::contract;
 
 
 namespace {

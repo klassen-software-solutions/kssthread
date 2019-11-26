@@ -11,10 +11,9 @@
 #include <iostream>
 #include <thread>
 
+#include <kss/test/all.h>
 #include <kss/thread/interruptible.hpp>
 #include <kss/thread/synchronizer.hpp>
-
-#include "ksstest.hpp"
 
 using namespace std;
 using namespace kss::thread;

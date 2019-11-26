@@ -7,9 +7,8 @@
 //  Licensing follows the MIT License.
 //
 
+#include <kss/test/all.h>
 #include <kss/thread/action_thread.hpp>
-
-#include "ksstest.hpp"
 
 using namespace std;
 using namespace kss::test;

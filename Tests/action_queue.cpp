@@ -13,17 +13,16 @@
 #include <stdexcept>
 #include <thread>
 
+#include <kss/test/all.h>
+#include <kss/util/all.h>
 #include <kss/thread/action_queue.hpp>
-#include <kss/thread/utility.hpp>
-
-#include "ksstest.hpp"
 
 using namespace std;
 using namespace kss::test;
 using namespace kss::thread;
 
-using kss::thread::_private::now;
-using kss::thread::_private::timeOfExecution;
+using kss::util::time::now;
+using kss::util::time::timeOfExecution;
 using time_point_t = chrono::time_point<chrono::steady_clock, chrono::milliseconds>;
 
 namespace {

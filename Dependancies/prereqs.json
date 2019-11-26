@@ -1,0 +1,9 @@
+[
+    {"git": "https://github.com/klassen-software-solutions/ksscontract.git"},
+    {
+        "tarball": "https://iweb.dl.sourceforge.net/project/libuuid/libuuid-1.0.3.tar.gz",
+        "arch": ["Linux-x86_64"]
+    },
+    {"git": "https://github.com/klassen-software-solutions/kssutil.git"},
+    {"git": "https://github.com/klassen-software-solutions/ksstest.git"}
+]

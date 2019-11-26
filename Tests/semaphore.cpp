@@ -14,9 +14,8 @@
 #include <system_error>
 #include <thread>
 
+#include <kss/test/all.h>
 #include <kss/thread/semaphore.hpp>
-
-#include "ksstest.hpp"
 
 using namespace std;
 using namespace kss::thread;

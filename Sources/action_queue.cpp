@@ -17,17 +17,17 @@
 #include <thread>
 
 #include <syslog.h>
-#include <uuid/uuid.h>
+#include <kss/contract/all.h>
+#include <kss/util/all.h>
 
-#include "_contract.hpp"
 #include "action_queue.hpp"
 
 using namespace std;
 using namespace std::chrono;
 using namespace kss::thread;
-namespace contract = kss::thread::_private::contract;
+namespace contract = kss::contract;
 
-using kss::thread::_private::now;
+using kss::util::time::now;
 
 using time_point_t = time_point<steady_clock, milliseconds>;
 
@@ -246,17 +246,8 @@ RepeatingAction::~RepeatingAction() noexcept {
     queue.cancel(identifier);
 }
 
-#if defined(__linux)
-    typedef char uuid_string_t[37];
-#endif
-
 void RepeatingAction::init() {
-    uuid_t uid;
-    uuid_string_t suid;
-    uuid_generate(uid);
-    uuid_unparse_lower(uid, suid);
-
-    identifier = string(suid);
+    identifier = string(kss::util::UUID::generate());
     queue.addAction(timeInterval, identifier, internalAction);
 
     contract::postconditions({

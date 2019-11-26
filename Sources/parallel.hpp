@@ -24,8 +24,10 @@
 #include <stdexcept>
 #include <vector>
 
+#include <kss/contract/all.h>
+#include <kss/util/all.h>
+
 #include "action_thread.hpp"
-#include "utility.hpp"
 
 namespace kss {
     namespace thread {
@@ -83,9 +85,9 @@ namespace kss {
                 // check when in debug mode. The reason for this is that the reason
                 // for creating this class is to allow a very low overhead version
                 // of the parallel() method.
-                if (futures.size() >= threads.size()) {
-                    _KSSTHREAD_PRECONDITIONS_FAILED
-                }
+                kss::contract::preconditions({
+                    futures.size() < threads.size()
+                });
 #               endif
 
                 const auto nextThreadNo = futures.size();

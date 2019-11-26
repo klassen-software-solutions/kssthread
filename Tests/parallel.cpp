@@ -12,26 +12,20 @@
 #include <iostream>
 #include <thread>
 
+#include <kss/test/all.h>
 #include <kss/thread/parallel.hpp>
-
-#include "ksstest.hpp"
 
 using namespace std;
 using namespace std::chrono;
 using namespace kss::thread;
 using namespace kss::test;
 
+using kss::util::time::timeOfExecution;
+
 namespace {
     void run(atomic<int>& numRan) {
         this_thread::sleep_for(10ms);
         ++numRan;
-    }
-
-    // "borrowed" from kssutil
-    milliseconds timeOfExecution(const function<void ()>& fn) {
-        const auto start = high_resolution_clock::now();
-        fn();
-        return duration_cast<milliseconds>(high_resolution_clock::now() - start);
     }
 }
 
