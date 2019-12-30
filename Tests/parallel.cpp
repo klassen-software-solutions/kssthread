@@ -71,7 +71,7 @@ static TestSuite ts("parallel", {
             }
         });
         KSS_ASSERT(numRan == numIterations*3);
-        KSS_ASSERT(t < tSerial);
+        KSS_ASSERT(isLessThan<long>(tSerial.count(), [&]{ return t.count(); }));
 
         numRan = 0;
         const auto tpg = timeOfExecution([&] {

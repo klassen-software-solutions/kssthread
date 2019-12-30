@@ -86,7 +86,7 @@ namespace kss {
                 // for creating this class is to allow a very low overhead version
                 // of the parallel() method.
                 kss::contract::preconditions({
-                    futures.size() < threads.size()
+                    KSS_EXPR(futures.size() < threads.size())
                 });
 #               endif
 

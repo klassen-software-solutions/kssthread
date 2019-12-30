@@ -17,18 +17,27 @@ using namespace kss::thread;
 // MARK: Condition
 
 void Condition::wait() {
-    lock_guard_t l(lock);
-    while (!pred()) {
-        interruptionPoint();
-        cv.wait(l);
+    if (!checkPredicate()) {
+        unique_lock<mutex> l(lock);
+        if (!pred()) {
+            cv.wait(l, [this] {
+                interruptionPoint();
+                return pred();
+            });
+        }
     }
 }
 
 void Condition::process(const function<bool ()> &fn) {
-    lock_guard_t l(lock);
+    lock_guard<mutex> l(lock);
     if (fn()) {
         cv.notify_all();
     }
+}
+
+bool Condition::checkPredicate() {
+    lock_guard<mutex> l(lock);
+    return pred();
 }
 
 
@@ -55,19 +64,28 @@ void Latch::reset() {
 // MARK: barrier
 
 void Barrier::wait() {
-    lock_guard_t l(lock);
-    ++counter;
-    if (counter >= n) {
-        cv.notify_all();
-        return;
-    }
-    while (counter < n) {
-        interruptionPoint();
-        cv.wait(l);
+    if (!incrementCounterAndCheck()) {
+        unique_lock<mutex> l(lock);
+        if (counter < n) {
+            cv.wait(l, [this] {
+                interruptionPoint();
+                return (counter >= n);
+            });
+        }
     }
 }
 
 void Barrier::reset() {
-    lock_guard_t l(lock);
+    lock_guard<mutex> l(lock);
     counter = 0;
+}
+
+bool Barrier::incrementCounterAndCheck() {
+    lock_guard<mutex> l(lock);
+    ++counter;
+    if (counter >= n) {
+        cv.notify_all();
+        return true;
+    }
+    return false;
 }

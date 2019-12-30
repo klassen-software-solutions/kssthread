@@ -103,7 +103,9 @@ static ActionQueueTestSuite ts({
 
         queue.addAction([&] {
             ++immediateTick;
-            KSS_ASSERT(now<time_point_t>() < (start + 10ms));
+            KSS_ASSERT(isLessThan<time_point_t>(start + 10ms, [&] {
+                return now<time_point_t>();
+            }));
         });
 
         for (int i = 0; i < 3; ++i) {
@@ -174,7 +176,9 @@ static ActionQueueTestSuite ts({
 
             queue.addAction([&] {
                 ++immediateTick;
-                KSS_ASSERT(now<time_point_t>() < (start + 15ms));
+                KSS_ASSERT(isLessThan<time_point_t>(start + 15ms, [&] {
+                    return now<time_point_t>();
+                }));
                 KSS_ASSERT(slowTick <= 1);
                 KSS_ASSERT(fastTick <= 1);
             });
@@ -190,17 +194,15 @@ static ActionQueueTestSuite ts({
         KSS_ASSERT(immediateTick == 1);
     }),
     make_pair("RepeatingAction destructor does not wait for pending actions", [] {
-        const auto t = timeOfExecution([]{
+        // Cannot use exact matches for timing results, but this should easily pass.
+        KSS_ASSERT(completesWithin(100ms, [] {
             auto& queue = getQueue();
             {
                 RepeatingAction ra(1s, queue, []{
-                    // should never run
-                    KSS_ASSERT(false);
+                    throw runtime_error("should never run");
                 });
             }
             resetQueue();
-        });
-        // Cannot use exact matches for timing results, but this should easily pass.
-        KSS_ASSERT(t < 100ms);
+        }));
     })
 });
