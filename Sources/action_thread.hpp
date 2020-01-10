@@ -8,19 +8,22 @@
 //
 // Note that since the whole purpose of the ActionThread is to minimize the thread
 // re-use overhead, we deviate from our normal contract practice and only perform
-// our condition checks whens when compiled for debugging, via the assert macro.
+// our condition checks whens when compiled for debugging.
 //
 
 #ifndef kssthread_action_thread_hpp
 #define kssthread_action_thread_hpp
 
 #include <atomic>
-#include <cassert>
 #include <condition_variable>
 #include <functional>
 #include <future>
 #include <iostream>
 #include <thread>
+
+#include <kss/contract/all.h>
+
+#include "lock.hpp"
 
 namespace kss { namespace thread {
 
@@ -42,7 +45,7 @@ namespace kss { namespace thread {
         ActionThread() = default;
 
         ~ActionThread() noexcept {
-            stopping = true;
+            locked(lock, [this] { stopping = true; });
             cv.notify_all();
             if (workerThread.joinable()) {
                 workerThread.join();
@@ -61,7 +64,7 @@ namespace kss { namespace thread {
          call. But it is also more limited in that it must return a future<T>.
 
          Note that it is an error to call this when the ActionThread is already running an
-         action. Doing so will will cause (in debug mode) an assertion to fail. Note that
+         action. Doing so will will cause (in debug mode) an condition to fail. Note that
          the only way to avoid this for certain is to call get() or wait() on the returned
          future before calling this method again.
          */
@@ -75,46 +78,50 @@ namespace kss { namespace thread {
 
     private:
         void startTask(std::packaged_task<T()>&& pt) {
-            std::unique_lock<std::mutex> l(lock);
-            assert(!_private::isCallable(worker));
+            std::lock_guard<std::mutex> l(lock);
+
+#           if !defined(NDEBUG)
+            kss::contract::preconditions({ KSS_EXPR(!_private::isCallable(worker)) });
+#           endif
+
             worker = move(pt);
             cv.notify_all();
-            assert(_private::isCallable(worker));
+
+#           if !defined(NDEBUG)
+            kss::contract::postconditions({ KSS_EXPR(_private::isCallable(worker)) });
+#           endif
         }
 
         std::thread workerThread { [this] {
-            while (!stopping) {
+            while (true) {
                 std::packaged_task<T()> localWorker;
 
                 // Wait until a worker has been assigned.
                 {
                     std::unique_lock<std::mutex> l(lock);
-                    while (!stopping && !_private::isCallable(worker)) {
-                        cv.wait(l);
-                    }
 
-                    if (stopping) {
-                        break;
-                    }
+                    if (stopping) { break; }
+                    cv.wait(l, [this] { return stopping || _private::isCallable(worker); });
+
+                    if (stopping) { break; }
                     localWorker.swap(worker);
 
-                    assert(!_private::isCallable(worker));
+#                   if !defined(NDEBUG)
+                    kss::contract::conditions({ KSS_EXPR(!_private::isCallable(worker)) });
+#                   endif
                 }
 
                 // Run the worker.
-                assert(_private::isCallable(localWorker));
-                if (stopping) {
-                    break;
-                }
-                else {
-                    localWorker();
-                }
+#               if !defined(NDEBUG)
+                kss::contract::conditions({ KSS_EXPR(_private::isCallable(localWorker)) });
+#               endif
+                localWorker();
             }
         }};
 
         std::mutex              lock;
         std::condition_variable cv;
-        std::atomic<bool>       stopping { false };
+        bool                    stopping = false;
         std::packaged_task<T()> worker;
     };
 }}

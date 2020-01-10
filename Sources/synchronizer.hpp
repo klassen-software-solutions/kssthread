@@ -76,14 +76,18 @@ namespace kss { namespace thread {
          */
         template <class Duration>
         bool waitFor(const Duration& dur) {
-            lock_guard_t l(lock);
-            if (pred()) {
-                return true;
+            if (!checkPredicate()) {
+                std::unique_lock<std::mutex> l(lock);
+                if (pred()) { return true; }
+                // Note that while this breaks CP.42, it is acceptable in this case since
+                // we will be returning the result of the predicate instead of assuming it,
+                // hence no race condition.
+                if (cv.wait_for(l, dur) == std::cv_status::timeout) {
+                    return false;
+                }
+                return pred();
             }
-            if (cv.wait_for(l, dur) == std::cv_status::timeout) {
-                return false;
-            }
-            return pred();
+            return true;
         }
 
         /*!
@@ -91,14 +95,18 @@ namespace kss { namespace thread {
          */
         template <class TimePoint>
         bool waitUntil(const TimePoint& tp) {
-            lock_guard_t l(lock);
-            if (pred()) {
-                return true;
+            if (!checkPredicate()) {
+                std::unique_lock<std::mutex> l(lock);
+                if (pred()) { return true; }
+                // Note that while this breaks CP.42, it is acceptable in this case since
+                // we will be returning the result of the predicate instead of assuming it,
+                // hence no race condition.
+                if (cv.wait_until(l, tp) == std::cv_status::timeout) {
+                    return false;
+                }
+                return pred();
             }
-            if (cv.wait_until(l, tp) == std::cv_status::timeout) {
-                return false;
-            }
-            return pred();
+            return true;
         }
 
         /*!
@@ -110,10 +118,11 @@ namespace kss { namespace thread {
         void process(const std::function<bool()>& fn);
 
     private:
-        using lock_guard_t = std::unique_lock<std::mutex>;
         predicate_t             pred;
         std::mutex              lock;
         std::condition_variable cv;
+
+        bool checkPredicate();
     };
 
 
@@ -157,17 +166,21 @@ namespace kss { namespace thread {
 
         template <class Duration>
         bool waitFor(const Duration& dur) {
-            lock_guard_t l(lock);
-            ++counter;
-            if (counter >= n) {
-                cv.notify_all();
-                return true;
+            if (!incrementCounterAndCheck()) {
+                std::unique_lock<std::mutex> l(lock);
+                if (counter < n) {
+                    // Note that while this breaks CP.42, it is acceptable in this case since
+                    // we will be returning the result of the counter instead of assuming it,
+                    // hence no race condition.
+                    if (cv.wait_for(l, dur) == std::cv_status::timeout) {
+                        if (counter >= 1) {
+                            --counter;
+                        }
+                    }
+                }
+                return (counter >= n);
             }
-            if (cv.wait_for(l, dur) == std::cv_status::timeout) {
-                --counter;
-                return false;
-            }
-            return (counter >= n);
+            return true;
         }
 
         /*!
@@ -175,17 +188,21 @@ namespace kss { namespace thread {
          */
         template <class TimePoint>
         bool waitUntil(const TimePoint& tp) {
-            lock_guard_t l(lock);
-            ++counter;
-            if (counter >= n) {
-                cv.notify_all();
-                return true;
+            if (!incrementCounterAndCheck()) {
+                std::unique_lock<std::mutex> l(lock);
+                if (counter < n) {
+                    // Note that while this breaks CP.42, it is acceptable in this case since
+                    // we will be returning the result of the counter instead of assuming it,
+                    // hence no race condition.
+                    if (cv.wait_until(l, tp) == std::cv_status::timeout) {
+                        if (counter >= 1) {
+                            --counter;
+                        }
+                    }
+                }
+                return (counter >= n);
             }
-            if (cv.wait_until(l, tp) == std::cv_status::timeout) {
-                --counter;
-                return false;
-            }
-            return (counter >= n);
+            return true;
         }
 
         /**
@@ -194,11 +211,12 @@ namespace kss { namespace thread {
         void reset();
 
     private:
-        using lock_guard_t = std::unique_lock<std::mutex>;
         std::mutex              lock;
         std::condition_variable cv;
         unsigned                counter = 0;
         const unsigned          n;
+
+        bool incrementCounterAndCheck();
     };
 
 }}

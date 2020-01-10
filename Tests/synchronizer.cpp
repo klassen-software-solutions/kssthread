@@ -61,7 +61,6 @@ static TestSuite ts("synchronizer", {
             t2.join();
             KSS_ASSERT(passedPoint1 && passedPoint2);
         }
-#if !defined(__APPLE__)
         // Test that condition::wait is a thread interruption point.
         KSS_ASSERT(isTrue([] {
             bool wasInterrupted = false;
@@ -79,7 +78,6 @@ static TestSuite ts("synchronizer", {
             th.join();
             return wasInterrupted;
         }));
-#endif
     }),
     make_pair("Latch", [] {
         Latch l;
@@ -118,7 +116,6 @@ static TestSuite ts("synchronizer", {
             t2.join();
             KSS_ASSERT(!t1.joinable() && !t2.joinable());
         }
-#if !defined(__APPLE__)
         // Test that latch::wait() is a thread interruption point.
         KSS_ASSERT(isTrue([&] {
             bool wasInterrupted = false;
@@ -136,7 +133,6 @@ static TestSuite ts("synchronizer", {
             th.join();
             return wasInterrupted;
         }));
-#endif
     }),
     make_pair("Barrier", [] {
         Barrier b(3);
@@ -175,7 +171,6 @@ static TestSuite ts("synchronizer", {
             t2.join();
             KSS_ASSERT(!t1.joinable() && !t2.joinable());
         }
-#if !defined(__APPLE__)
         // Test that barrier::wait() is a thread interruption point.
         KSS_ASSERT(isTrue([&] {
             bool wasInterrupted = false;
@@ -191,6 +186,5 @@ static TestSuite ts("synchronizer", {
             th.join();
             return wasInterrupted;
         }));
-#endif
     })
 });
