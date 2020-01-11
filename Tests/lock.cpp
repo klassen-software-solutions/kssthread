@@ -11,9 +11,8 @@
 #include <mutex>
 #include <vector>
 
+#include <kss/test/all.h>
 #include <kss/thread/lock.hpp>
-
-#include "ksstest.hpp"
 
 using namespace std;
 using namespace kss::thread;

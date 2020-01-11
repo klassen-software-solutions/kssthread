@@ -13,10 +13,9 @@
 #include <vector>
 
 #include <pthread.h>
+#include <kss/test/all.h>
 
 #include <kss/thread/interruptible.hpp>
-
-#include "ksstest.hpp"
 
 using namespace std;
 using namespace kss::thread;

@@ -16,8 +16,8 @@
 #include <type_traits>
 
 #include <pthread.h>
+#include <kss/contract/all.h>
 
-#include "_contract.hpp"
 #include "interruptible.hpp"
 
 using namespace std;

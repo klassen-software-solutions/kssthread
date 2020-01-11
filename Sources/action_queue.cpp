@@ -7,7 +7,6 @@
 //  Licensing follows the MIT License.
 //
 
-#include <atomic>
 #include <condition_variable>
 #include <exception>
 #include <iostream>
@@ -17,17 +16,17 @@
 #include <thread>
 
 #include <syslog.h>
-#include <uuid/uuid.h>
+#include <kss/contract/all.h>
+#include <kss/util/all.h>
 
-#include "_contract.hpp"
 #include "action_queue.hpp"
 
 using namespace std;
 using namespace std::chrono;
 using namespace kss::thread;
-namespace contract = kss::thread::_private::contract;
+namespace contract = kss::contract;
 
-using kss::thread::_private::now;
+using kss::util::time::now;
 
 using time_point_t = time_point<steady_clock, milliseconds>;
 
@@ -45,27 +44,39 @@ using action_map_t = multimap<time_point_t, ActionDetails>;
 // MARK: ActionQueue
 
 struct ActionQueue::Impl {
-    std::thread     actionThread;
-    size_t          maxPending = 0;
-    atomic<bool>    stopping { false };
-    atomic<bool>    waiting { false };
-    atomic<bool>    runningAction { false };
+    std::thread actionThread;
+    size_t      maxPending = 0;
+    bool        stopping = false;
+    bool        waiting = false;
+    bool        runningAction = false;
 
     // The following must be protected by the lock and the condition variable.
     mutex               lock;
     condition_variable  cv;
     action_map_t        pendingActions;
 
-    void runActionThread() {
-         while (!stopping) {
-             bool haveAction = false;
-             action_t currentAction;
-             time_point_t nextTargetTime;
+    inline time_point_t getNextTargetTime() noexcept {
+        return (pendingActions.empty()
+                ? now<time_point_t>() + 10000ms
+                : pendingActions.begin()->first);
+    }
 
-             // Wait until there is at least one item in the queue.
-             {
+    void runActionThread() {
+        while (true) {
+            bool haveAction = false;
+            action_t currentAction;
+
+            {
                 unique_lock<mutex> l(lock);
-                while (!stopping && pendingActions.empty()) { cv.wait(l); }
+
+                if (stopping) {
+                    break;
+                }
+
+                const auto nextTargetTime = getNextTargetTime();
+                cv.wait_until(l, nextTargetTime, [this] {
+                    return stopping || !pendingActions.empty();
+                });
 
                 if (stopping) {
                     break;
@@ -73,8 +84,7 @@ struct ActionQueue::Impl {
 
                 if (!pendingActions.empty()) {
                     // If the next action is due to run, remove it from the queue and
-                    // place it into currentAction. If it is not due to be run, compute
-                    // the duration that we should wait.
+                    // place it into currentAction.
                     const auto cit = pendingActions.begin();
                     const auto currentTime = now<time_point_t>();
                     if (cit->first <= currentTime) {
@@ -83,46 +93,41 @@ struct ActionQueue::Impl {
                         pendingActions.erase(cit);
                         haveAction = true;
                     }
-                    else {
-                        nextTargetTime = cit->first;
-                    }
                 }
-             }
+            }
 
-             // If we have an action to run, run it now. Otherwise we wait until the
-             // next target time has arrived.
-             if (haveAction) {
-                 currentAction();
-                 runningAction = false;
-                 cv.notify_all();
-             }
-             else if (!stopping) {
-                 unique_lock<mutex> l(lock);
-                 cv.wait_until(l, nextTargetTime);
-             }
-             else {
-                 break;
-             }
+            if (haveAction) {
+                runAction(currentAction);
+            }
         }
     }
 
+    void runAction(const action_t& action) {
+        action();
+        {
+            lock_guard<mutex> l(lock);
+            runningAction = false;
+        }
+        cv.notify_all();
+    }
+
     void addActionDetails(ActionDetails&& details) {
+        lock_guard<mutex> l(lock);
         if (!stopping) {
             if (waiting) {
                 throw system_error(EAGAIN, system_category(), "addActionAfter (queue waiting)");
             }
             else {
-                unique_lock<mutex> l(lock);
                 if (pendingActions.size() >= maxPending) {
                     throw system_error(EAGAIN, system_category(), "addActionAfter");
                 }
 
                 pendingActions.emplace(details.targetTime, move(details));
+                cv.notify_all();
 
                 contract::postconditions({
                     KSS_EXPR(!pendingActions.empty())
                 });
-                cv.notify_all();
             }
         }
     }
@@ -135,6 +140,8 @@ ActionQueue::ActionQueue(ActionQueue&&) = default;
 ActionQueue& ActionQueue::operator=(ActionQueue &&) noexcept = default;
 
 ActionQueue::ActionQueue(size_t maxPending) : impl(new Impl()) {
+    lock_guard<mutex> l(impl->lock);
+
     impl->maxPending = maxPending;
     impl->actionThread = std::thread { [this]{ impl->runActionThread(); }};
 
@@ -149,7 +156,10 @@ ActionQueue::ActionQueue(size_t maxPending) : impl(new Impl()) {
 
 ActionQueue::~ActionQueue() noexcept {
     try {
-        impl->stopping = true;
+        {
+            lock_guard<mutex> l(impl->lock);
+            impl->stopping = true;
+        }
         impl->cv.notify_all();
         cancel();
         if (impl->actionThread.joinable()) {
@@ -164,34 +174,37 @@ ActionQueue::~ActionQueue() noexcept {
 
 
 size_t ActionQueue::cancel(const string& identifier) {
-    unique_lock<mutex> l(impl->lock);
     size_t ret = 0;
-    const auto sizeIn = impl->pendingActions.size();
-    if (!impl->pendingActions.empty()) {
-        if (identifier.empty()) {
-            ret = sizeIn;
-            impl->pendingActions.clear();
-        }
-        else {
-            const auto end = impl->pendingActions.end();
-            for (auto it = impl->pendingActions.begin(); it != end;) {
-                if (it->second.identifier == identifier) {
-                    it = impl->pendingActions.erase(it);
-                    ++ret;
-                }
-                else {
-                    ++it;
+    {
+        lock_guard<mutex> l(impl->lock);
+        const auto sizeIn = impl->pendingActions.size();
+        if (!impl->pendingActions.empty()) {
+            if (identifier.empty()) {
+                ret = sizeIn;
+                impl->pendingActions.clear();
+            }
+            else {
+                const auto end = impl->pendingActions.end();
+                for (auto it = impl->pendingActions.begin(); it != end;) {
+                    if (it->second.identifier == identifier) {
+                        it = impl->pendingActions.erase(it);
+                        ++ret;
+                    }
+                    else {
+                        ++it;
+                    }
                 }
             }
         }
+
+        contract::postconditions({
+            KSS_EXPR(impl->pendingActions.size() == (sizeIn - ret))
+        });
     }
+
     if (ret > 0) {
         impl->cv.notify_all();
     }
-
-    contract::postconditions({
-        KSS_EXPR(impl->pendingActions.size() == (sizeIn - ret))
-    });
     return ret;
 }
 
@@ -200,9 +213,10 @@ void ActionQueue::wait() {
     unique_lock<mutex> l(impl->lock);
     if (!impl->pendingActions.empty() || impl->runningAction) {
         impl->waiting = true;
-        while (!impl->stopping && (!impl->pendingActions.empty() || impl->runningAction)) {
-            impl->cv.wait(l);
-        }
+        auto self = impl.get();
+        impl->cv.wait(l, [self] {
+            return self->stopping || (self->pendingActions.empty() && !self->runningAction);
+        });
         impl->waiting = false;
     }
 
@@ -246,17 +260,8 @@ RepeatingAction::~RepeatingAction() noexcept {
     queue.cancel(identifier);
 }
 
-#if defined(__linux)
-    typedef char uuid_string_t[37];
-#endif
-
 void RepeatingAction::init() {
-    uuid_t uid;
-    uuid_string_t suid;
-    uuid_generate(uid);
-    uuid_unparse_lower(uid, suid);
-
-    identifier = string(suid);
+    identifier = string(kss::util::UUID::generate());
     queue.addAction(timeInterval, identifier, internalAction);
 
     contract::postconditions({

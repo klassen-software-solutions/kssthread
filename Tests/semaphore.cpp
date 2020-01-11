@@ -7,6 +7,7 @@
 //  Licensing follows the MIT License.
 //
 
+#include <atomic>
 #include <cstdlib>
 #include <cstring>
 #include <memory>
@@ -14,101 +15,62 @@
 #include <system_error>
 #include <thread>
 
+#include <kss/test/all.h>
+#include <kss/thread/interruptible.hpp>
 #include <kss/thread/semaphore.hpp>
-
-#include "ksstest.hpp"
 
 using namespace std;
 using namespace kss::thread;
 using namespace kss::test;
 
-namespace {
 
-    class MyTestSuite : public TestSuite, public HasBeforeAll, public HasAfterAll {
-    public:
-        MyTestSuite(const string& name, test_case_list_t fns) : TestSuite(name, fns) {}
+static TestSuite ts("semaphore", {
+make_pair("simple tests", [] {
+    Semaphore s("/KssThreadTestSemaphore1", 2);
+    KSS_ASSERT(s.try_lock() == true);
+    KSS_ASSERT(s.try_lock() == true);
+    KSS_ASSERT(s.try_lock() == false);
 
-        void beforeAll() override {
-            _semaphore.reset(new Semaphore("/KssThreadSemaphoreTest", 2));
-        }
+    s.unlock();
+    KSS_ASSERT(s.try_lock() == true);
+    KSS_ASSERT(s.try_lock() == false);
 
-        void afterAll() override {
-            // Check that the semaphore is still valid.
-            KSS_ASSERT((bool)_semaphore == true);
-            if ((bool)_semaphore) {
-                _semaphore.reset();
-            }
-        }
+    s.unlock();
+    s.lock();
+    KSS_ASSERT(s.try_lock() == false);
 
-        static Semaphore& semaphore() noexcept {
-            return *dynamic_cast<MyTestSuite&>(TestSuite::get())._semaphore;
-        }
+    s.unlock();
+    s.unlock();
+}),
+make_pair("will block threads", [] {
+    Semaphore s("/KssThreadTestSemaphore2", 2);
+    thread t1 { [&]{ s.lock(); }};
+    thread t2 { [&]{ s.lock(); }};
+    t1.join();
+    t2.join();
+    KSS_ASSERT(!t1.joinable() && !t2.joinable());
+    std::thread t3 { [&]{ s.lock(); }};
+    KSS_ASSERT(t3.joinable());
+    s.unlock();
+    t3.join();
+    KSS_ASSERT(!t3.joinable());
+    s.unlock();
+}),
+make_pair("is interruptible", [] {
+    Semaphore s("/KssThreadTestSemaphore3", 1);
+    // Test that semaphore::lock is thread interruptible.
+    bool wasInterrupted = false;
+    std::thread th { [&] {
+        interruptible { [&] {
+            onInterrupted([&]{ wasInterrupted = true; });
+            s.lock();
+        }};
+    }};
 
-    private:
-        unique_ptr<Semaphore> _semaphore;
-    };
-}
-
-
-static MyTestSuite ts("semaphore", {
-    make_pair("Simple Tests", [] {
-        auto& s = MyTestSuite::semaphore();
-        KSS_ASSERT(s.try_lock() == true);
-        KSS_ASSERT(s.try_lock() == true);
-        KSS_ASSERT(s.try_lock() == false);
-
-        s.unlock();
-        KSS_ASSERT(s.try_lock() == true);
-        KSS_ASSERT(s.try_lock() == false);
-
-        s.unlock();
-        s.lock();
-        KSS_ASSERT(s.try_lock() == false);
-
-        s.unlock();
-        s.unlock();
-    }),
-    make_pair("Will Block Threads", [] {
-        auto& s = MyTestSuite::semaphore();
-        thread t1 { [&]{ s.lock(); }};
-        thread t2 { [&]{ s.lock(); }};
-        t1.join();
-        t2.join();
-        KSS_ASSERT(!t1.joinable() && !t2.joinable());
-        std::thread t3 { [&]{ s.lock(); }};
-        KSS_ASSERT(t3.joinable());
-        s.unlock();
-        t3.join();
-        KSS_ASSERT(!t3.joinable());
-        s.unlock();
-    })
+    s.try_lock();
+    KSS_ASSERT(th.joinable());
+    interrupt(th);
+    th.join();
+    KSS_ASSERT(wasInterrupted);
+})
 });
-
-#if 0
-// TODO: put this test back in once interruptible has been moved
-static TestSet ts("lock", {
-    []{
-        KSS_TEST_GROUP("semaphore");
-        const auto name = kss::util::file::temporary_filename("kssthreadsem");
-        {
-            semaphore s(name, 2);
-            {
-                // Test that semaphore::lock is thread interruptible.
-                bool wasInterrupted = false;
-                std::thread th { [&] {
-                    interruptible { [&] {
-                        on_interrupted([&]{ wasInterrupted = true; });
-                        s.lock();
-                    }};
-                }};
-
-                std::this_thread::yield();
-                KSS_ASSERT(th.joinable());
-                interrupt(th);
-                th.join();
-                KSS_ASSERT(wasInterrupted);
-            }
-        }
-    },
-});
-#endif

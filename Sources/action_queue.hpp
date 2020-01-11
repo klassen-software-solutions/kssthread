@@ -25,7 +25,8 @@
 #include <memory>
 #include <string>
 #include <thread>
-#include "utility.hpp"
+
+#include <kss/util/all.h>
 
 namespace kss { namespace thread {
 
@@ -104,8 +105,8 @@ namespace kss { namespace thread {
                               const std::string& identifier,
                               const action_t& action)
         {
-            using kss::thread::_private::checked_duration_cast;
-            addActionAfter(checked_duration_cast<std::chrono::milliseconds>(delay),
+            using util::time::checkedDurationCast;
+            addActionAfter(checkedDurationCast<std::chrono::milliseconds>(delay),
                            identifier, action);
         }
 
@@ -114,22 +115,22 @@ namespace kss { namespace thread {
                               const std::string& identifier,
                               action_t&& action)
         {
-            using kss::thread::_private::checked_duration_cast;
-            addActionAfter(checked_duration_cast<std::chrono::milliseconds>(delay),
+            using util::time::checkedDurationCast;
+            addActionAfter(checkedDurationCast<std::chrono::milliseconds>(delay),
                            identifier, move(action));
         }
 
         template <class Duration>
         inline void addAction(const Duration& delay, const action_t& action) {
-            using kss::thread::_private::checked_duration_cast;
-            addActionAfter(checked_duration_cast<std::chrono::milliseconds>(delay),
+            using util::time::checkedDurationCast;
+            addActionAfter(checkedDurationCast<std::chrono::milliseconds>(delay),
                            "", action);
         }
 
         template <class Duration>
         inline void addAction(const Duration& delay, action_t&& action) {
-            using kss::thread::_private::checked_duration_cast;
-            addActionAfter(checked_duration_cast<std::chrono::milliseconds>(delay),
+            using util::time::checkedDurationCast;
+            addActionAfter(checkedDurationCast<std::chrono::milliseconds>(delay),
                            "", move(action));
         }
 
@@ -200,7 +201,7 @@ namespace kss { namespace thread {
         RepeatingAction(const Duration& interval,
                         ActionQueue& q,
                         const ActionQueue::action_t& act)
-        : timeInterval(kss::thread::_private::checked_duration_cast<std::chrono::milliseconds>(interval)),
+        : timeInterval(kss::util::time::checkedDurationCast<std::chrono::milliseconds>(interval)),
         queue(q), action(act)
         {
             init();
@@ -210,7 +211,7 @@ namespace kss { namespace thread {
         RepeatingAction(const Duration& interval,
                         ActionQueue& q,
                         ActionQueue::action_t&& act)
-        : timeInterval(kss::thread::_private::checked_duration_cast<std::chrono::milliseconds>(interval)),
+        : timeInterval(kss::util::time::checkedDurationCast<std::chrono::milliseconds>(interval)),
         queue(q), action(move(act))
         {
             init();
